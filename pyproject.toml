@@ -1,0 +1,23 @@
+[project]
+name = "cppo"
+version = "0.1.0"
+description = "Coordinated Pass@K Policy Optimization for Code Reasoning"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.1",
+    "transformers>=4.40",
+    "datasets>=2.18,<4.0",
+    "huggingface-hub",
+    "pyyaml>=6.0",
+    "numpy",
+    "scikit-learn",
+    "tqdm",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["cppo*"]

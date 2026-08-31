@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.DS_Store
+
+# Run outputs — never commit weights, rollouts, or logs.
+# Leading slash anchors these to the repository root so the package
+# directory cppo/data/ is NOT swept up by the `data` rule.
+/data/
+/checkpoints/
+/logs/
+/runs/
+*.pt
+*.safetensors

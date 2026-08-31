@@ -1,0 +1,16 @@
+# Stage 3: RM-guided planner warm-up under R_warm = J_psi(x, S).
+# Planner tokens only; the solver is frozen and no verifier outcome is used.
+# Stop when the fraction of plans accepted by J_psi plateaus.
+
+warmup:
+  epochs: 3
+  problems_per_batch: 4
+  m_tuples: 4
+  lr: 1.0e-6
+  kl_weight: 0.01
+  clip_eps: 0.2
+  temperature: 0.9
+  stop_patience: 3
+  min_valid_rate: 0.2
+  rm_reward_mode: "binary_jpsi"
+  selection_metric: "rm_valid_rate"

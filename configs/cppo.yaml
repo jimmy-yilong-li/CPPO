@@ -1,0 +1,27 @@
+# Stage 5: joint CPPO update.
+# R_plan = J_psi * R_out, with within-tuple solver advantages and
+# across-tuple planner advantages fed to a split-region GRPO loss.
+
+cppo:
+  epochs: 8
+  problems_per_batch: 4
+  m_tuples: 8                          # M in the across-tuple planner advantage
+  lr: 5.0e-7                           # decimal form: "5e-7" parses as a string
+  kl_weight: 0.01
+  clip_eps: 0.2
+  plan_temperature: 0.9
+  solve_temperature: 0.7
+  use_pass_rate: false                 # binary per-branch verifier outcome
+  log_interval: 1
+  save_interval: 4
+
+  # Reward contract. The config guard rejects any other pair.
+  rm_reward_mode: "binary_jpsi"
+  plan_reward_mode: "jpsi_times_outcome"
+  rm_jpsi_threshold: 0.17              # tau: high-recall validity gate
+
+  planner_prompt_mode: "plan_only"
+  gradient_checkpointing: true
+  ref_dtype: "bf16"                    # frozen reference only; policy stays fp32
+  max_train_tokens: 4096
+  param_delta_max_tensors: 4

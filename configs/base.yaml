@@ -1,0 +1,35 @@
+# Shared configuration for every CPPO stage.
+# Values follow Section 4 (Experimental Setup) of the paper.
+
+model:
+  base: "Qwen/Qwen3.5-4B-Base"     # planner and solver share this backbone
+  rm:   "Qwen/Qwen3.5-0.8B-Base"   # plan-validity gate J_psi
+
+planner:
+  k: 4                    # methods per strategy tuple = solver attempt budget
+  n_samples_per_problem: 8  # M: planner tuples per prompt (across-tuple advantage)
+  temperature: 0.9
+  max_tokens: 512
+
+solver:
+  temperature: 0.7
+  max_tokens: 2048
+
+data:
+  # All training draws from CodeContests train. APPS and LiveCodeBench-v6 are
+  # evaluation-only and must never enter a training pool: 0 means SKIP.
+  code_dataset: "codecontests"
+  code_split: "train"
+  code_difficulty: null
+  code_max_problems: 0      # APPS: skip
+  code_min_tests: 1
+  code_max_test_cases: 3
+  cc_split: "train"
+  cc_max_problems: 300      # joint CPPO rollout pool
+  exec_timeout: 10
+  seed: 42
+
+paths:
+  rm_checkpoint: "checkpoints/reward_model"
+  warmup_checkpoint: "checkpoints/warmup"
+  cppo_checkpoint: "checkpoints/cppo"

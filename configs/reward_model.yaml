@@ -1,0 +1,17 @@
+# Stage 2: plan-validity gate J_psi.
+# Binary Pass/Fail verbalizer head on a frozen prompt surface, trained with
+# BCE (ranking_weight 0). Accept a checkpoint only when held-out AUC >= 0.75,
+# balanced accuracy >= 0.70, and precision and recall both >= 0.65.
+
+rm:
+  data: "data/plan_validity_labels.jsonl"   # supply your own labeled tuples
+  model: "Qwen/Qwen3.5-0.8B-Base"
+  output: "checkpoints/reward_model"
+  data_mode: "paper_binary_balanced"
+  source_policy: "non_corruption"
+  neg_per_pos: 1
+  epochs: 3
+  batch_size: 8
+  lr: 1.0e-5
+  max_length: 1024
+  ranking_weight: 0.0
