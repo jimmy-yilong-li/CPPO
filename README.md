@@ -63,7 +63,7 @@ code follow shortly.
 | Trained checkpoints (planner–solver, plan-validity RM) | uploading soon |
 | Baseline implementations (PKPO, UpSkill, PlanSearch) | uploading soon |
 | SFT data-construction funnel and judge prompts | uploading soon |
-| Ablation tooling and figure-generation scripts | uploading soon |
+| Ablation tooling | uploading soon |
 | Run logs and evaluation manifests | uploading soon |
 
 We redistribute no benchmark content: APPS, CodeContests, and LiveCodeBench-v6 stay with their original
