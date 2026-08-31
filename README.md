@@ -233,38 +233,6 @@ error, timeout, memory overflow, empty extraction, and wrong answer all score $V
 | Filesystem | read-only image, ephemeral scratch |
 | Standard library | Python 3 + numpy, no third-party packages |
 
-## Data
-
-All training draws from **CodeContests train**. APPS and LiveCodeBench-v6 are evaluation-only: neither
-enters any planner SFT pool, judge label, reward-model split, warm-up batch, CPPO rollout, or hyperparameter
-sweep. The shipped `configs/base.yaml` encodes this: APPS is set to skip.
-
-| Stage | Source split | # Problems |
-| --- | --- | ---: |
-| Planner SFT (strict-4 gold tuples) | CC train | 333 |
-| Reward model (train + val, balanced 1:1) | CC train, filtered | 1110 + 278 |
-| Planner warm-up | CC train, filtered | 500 |
-| Joint CPPO rollout pool | CC train | 300 |
-| Held-out eval — APPS | APPS test (introductory) | 200 |
-| Held-out eval — CodeContests | CC valid (official) | 100 |
-| Held-out eval — LCBv6 | LCBv6 held-out | 300 |
-
-Deduplication normalizes each statement — lowercase, strip whitespace and HTML, canonicalize LaTeX, remove
-sample I/O — then hashes it with SHA-256, matching on source identifiers when both items expose them. Every
-cross-corpus train-eval pair has zero prompt-hash overlap.
-
-## Reward-model acceptance criteria
-
-We accept a plan-validity checkpoint only when its held-out validation metrics jointly satisfy AUC ≥ 0.75,
-balanced accuracy ≥ 0.70, and precision and recall both ≥ 0.65 at the operating threshold. Raw accuracy is
-excluded: at a single fixed threshold it hides performance at the high-recall point where the gate actually
-runs.
-
-The gate is a validity filter, not a quality scorer. It fits held-out judge labels well (AUC 0.971) but
-predicts frozen-solver outcomes only weakly (AUC 0.572). Ablating it leaves pass@4 nearly unchanged while
-quadrupling the duplicate-plan rate (0.08 to 0.32), which is exactly the behavior a validity constraint
-should show.
-
 ## Citation
 
 ```bibtex
@@ -275,22 +243,6 @@ should show.
   year      = {2026}
 }
 ```
-
-## Ethics and intended use
-
-CPPO trains code policies with execution-based rewards. The verifier checks functional correctness only —
-not security, not robustness — so downstream use requires review. All generated code runs in the sandboxed,
-time-bounded runner described above. We use only public APPS, CodeContests, and LiveCodeBench-v6 data under
-their original licenses, and no PII. The plan-validity reward model may inherit biases from the offline LLM
-judge, so we validate it on balanced held-out data before use.
-
-## Limitations
-
-Our claims cover competitive programming, where problems admit several distinct algorithmic strategies.
-Benchmarks with a single canonical solution path, such as MATH or AIME, fall outside this scope; there CPPO
-may reduce to a more expensive plan-and-solve. The planner reward is sparse by construction, so CPPO depends
-on the warm-up and the audit gate to train at all. Planner and solver share one backbone; separating them is
-future work.
 
 ## License
 
