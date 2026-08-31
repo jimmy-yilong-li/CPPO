@@ -34,16 +34,16 @@ within-tuple advantages, planner tokens from across-tuple advantages.</em>
 ---
 
 > **Abstract.** Repeated sampling against a verifier is the standard way to allocate test-time compute for
-> code generation, with pass@$K$ as the canonical metric. Drawing $K$ independent samples from a single
+> code generation, with pass@K as the canonical metric. Drawing $K$ independent samples from a single
 > answer distribution, however, often produces near-duplicate reasoning paths and wastes the budget on
 > redundant rollouts. This failure is costly in competitive programming, where many problems admit several
-> distinct algorithmic strategies and pass@$K$ requires only one correct attempt. We propose **Coordinated
-> Pass@$K$ Policy Optimization (CPPO)**, which trains a joint planner–solver policy for pass@$K$: a planner
+> distinct algorithmic strategies and pass@K requires only one correct attempt. We propose **Coordinated
+> Pass@K Policy Optimization (CPPO)**, which trains a joint planner–solver policy for pass@K: a planner
 > emits a tuple of $K{=}4$ alternative high-level methods, and a shared solver attempts one solution per
 > method. We train it with a multiplicative planner reward,
 > $R_{\text{plan}} = J_\psi \cdot R_{\text{out}}$, assigning credit only to valid strategy tuples that lead
-> to verifier-confirmed pass@$K$ success. Across APPS, CodeContests, and LiveCodeBench-v6, CPPO improves
-> pass@4 over direct sampling, planning baselines, planner-only SFT, and pass@$K$-oriented RL under the same
+> to verifier-confirmed pass@K success. Across APPS, CodeContests, and LiveCodeBench-v6, CPPO improves
+> pass@4 over direct sampling, planning baselines, planner-only SFT, and pass@K-oriented RL under the same
 > $K{=}4$ solver-attempt budget.
 
 ---
@@ -55,7 +55,7 @@ within-tuple advantages, planner tokens from across-tuple advantages.</em>
 > finish organizing them. Watch or star the repository to be notified.
 
 What is already here covers the CPPO algorithm end to end: the plan-validity reward model, the sandboxed
-verifier, and the entry points for all five training stages plus pass@$K$ evaluation — enough to read the
+verifier, and the entry points for all five training stages plus pass@K evaluation — enough to read the
 method precisely and to train and evaluate on your own data.
 
 | Component | Status |
@@ -83,9 +83,9 @@ CPPO changes the policy factorization. Instead of drawing $K$ independent answer
 structured object — a tuple of $K$ strategy sketches generated autoregressively, so each method conditions
 on its predecessors:
 
-$$q_\Theta(S \mid x) = \prod_{i=1}^{K} q_\Theta(s_i \mid x, s_{<i}), \qquad y_i \sim p_\Theta(\cdot \mid x, s_i).$$
+$$q_\Theta(S \mid x) = \prod_{i=1}^{K} q_\Theta(s_i \mid x, s_{\lt i}), \qquad y_i \sim p_\Theta(\cdot \mid x, s_i).$$
 
-A sandboxed verifier $V$ scores each branch. The tuple-level outcome reward is the pass@$K$ indicator, and a
+A sandboxed verifier $V$ scores each branch. The tuple-level outcome reward is the pass@K indicator, and a
 frozen plan-validity model gates planner credit:
 
 $$R_{\text{out}} = \mathbb{I}\left[\max_i V(x, y_i) = 1\right], \qquad J_\psi(x, S) = \mathbb{I}\left[p_\psi(\text{Pass} \mid x, S) \geq \tau\right], \qquad R_{\text{plan}} = J_\psi \cdot R_{\text{out}}.$$
@@ -193,7 +193,7 @@ pool, from which `pass_at_k_sweep` reads off each rung of `1/2/4/8/16/32` that t
 reported only when every problem has at least that many samples, so each k is averaged over the same problem
 set.
 
-**Stage 4 is a gate, not a formality.** It requires both a nonzero frozen-solver pass@$K$ rate from the
+**Stage 4 is a gate, not a formality.** It requires both a nonzero frozen-solver pass@K rate from the
 warmed planner and a nonzero $R_{\text{plan}}$ density across sampled rollouts. If either fails, return to
 Stage 1 or Stage 2 rather than launch CPPO: the multiplicative reward is sparse by construction, and a
 planner whose tuples $J_\psi$ rejects earns zero credit even when the solver succeeds — started from such a
