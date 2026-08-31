@@ -28,7 +28,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from cppo.data.problem import Problem
 from cppo.eval.metrics import mean_pass_at_k_sweep
-from cppo.data.prompts import make_solve_prompt, parse_plan_tuple, to_chat_text
+from cppo.data.prompts import make_solve_prompt, to_chat_text
 from cppo.sandbox.executor import verify_solution
 from cppo.training.planner_sft_dataset import (
     make_planner_plan_only_prompt,

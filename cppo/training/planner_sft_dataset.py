@@ -87,24 +87,6 @@ def load_sft_records(
     return records
 
 
-def split_records(
-    records: list[PlannerSFTRecord],
-    *,
-    eval_fraction: float,
-    seed: int,
-) -> tuple[list[PlannerSFTRecord], list[PlannerSFTRecord]]:
-    if not 0.0 <= eval_fraction < 1.0:
-        raise ValueError("eval_fraction must be in [0, 1)")
-    shuffled = list(records)
-    random.Random(seed).shuffle(shuffled)
-    n_eval = int(round(len(shuffled) * eval_fraction))
-    eval_records = shuffled[:n_eval]
-    train_records = shuffled[n_eval:]
-    if not train_records:
-        raise ValueError("empty train split")
-    return train_records, eval_records
-
-
 def split_records_by_problem(
     records: list[PlannerSFTRecord],
     *,

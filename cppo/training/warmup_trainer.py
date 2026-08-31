@@ -10,9 +10,7 @@ After generating with temperature, we recompute logprobs via a forward pass.
 
 from __future__ import annotations
 
-import copy
 import logging
-from typing import Any
 
 import torch
 import torch.nn.functional as F

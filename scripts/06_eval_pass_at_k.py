@@ -20,10 +20,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from cppo.data.apps_loader import load_apps
 from cppo.data.codecontests_loader import load_codecontests
 from cppo.data.livecodebench_loader import load_livecodebench
-from cppo.data.problem import Problem
 from cppo.data.prompts import make_plan_prompt, make_solve_prompt, parse_plan_tuple
+from cppo.eval.metrics import mean_pass_at_k_sweep, pass_at_k
 from cppo.sandbox.executor import verify_solution
-from cppo.eval.metrics import DEFAULT_K_LADDER, mean_pass_at_k_sweep, pass_at_k
 
 
 def _is_complete_hf_ckpt(d: str) -> bool:
