@@ -26,8 +26,7 @@ def _assert_policy_dtype_safe_for_optimizer(params) -> None:
     Half-precision dtypes have ~3 decimal digits of mantissa near
     unit-magnitude weights. With AdamW + small lr (e.g. 5e-7), the
     update is below the dtype's quantum and `param.add_(...)` is a
-    silent no-op. The 2026-05-10 smoke ran for 35 minutes producing
-    `loss=0.0000` every epoch for exactly this reason.
+    silent no-op: the loss prints normally while the weights never move.
 
     Trainable parameters must be float32. Frozen reference models
     (no optimizer attached) can stay in bf16/fp16 — they only forward.
@@ -151,8 +150,7 @@ class CPPOTrainer:
 
         # Refuse half-precision trainable params — AdamW updates at
         # typical CPPO LRs fall below bf16/fp16 mantissa precision and
-        # the step is a silent no-op (root cause of the 2026-05-10
-        # smoke's all-zero losses).
+        # the step is a silent no-op.
         _assert_policy_dtype_safe_for_optimizer(
             p for p in self.policy_model.parameters() if p.requires_grad
         )
@@ -475,7 +473,7 @@ class CPPOTrainer:
             - grad_norm: L2 norm of policy-parameter gradients after backward()
             - param_delta: L2 distance between pre- and post-step parameters
             - parseable_rate: fraction of plans that parsed successfully
-            - rm_valid_rate: alias of jpsi_pass_rate for paper-base runs
+            - rm_valid_rate: alias of jpsi_pass_rate
             - avg_cpsi: mean diagnostic c_psi across all parseable bundles
             - avg_pass_prob: mean raw P(Pass) across parseable bundles
             - jpsi_pass_rate: fraction of parseable plans with J_psi = 1

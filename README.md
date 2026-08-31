@@ -48,15 +48,11 @@ within-tuple advantages, planner tokens from across-tuple advantages.</em>
 
 ---
 
-## Release status — upload in progress
+## Release status
 
-> **This repository is being uploaded in stages.** The research is complete; what remains is packaging.
-> The core method is here now, and the checkpoints, baselines, and remaining code follow as soon as we
-> finish organizing them. Watch or star the repository to be notified.
-
-What is already here covers the CPPO algorithm end to end: the plan-validity reward model, the sandboxed
-verifier, and the entry points for all five training stages plus pass@K evaluation — enough to read the
-method precisely and to train and evaluate on your own data.
+This repository is being uploaded in stages. The research is complete; what remains is packaging. What is
+here now is enough to train and evaluate the method on your own data; the checkpoints and the remaining
+code follow shortly.
 
 | Component | Status |
 | --- | :---: |
@@ -71,11 +67,7 @@ method precisely and to train and evaluate on your own data.
 | Run logs and evaluation manifests | uploading soon |
 
 We redistribute no benchmark content: APPS, CodeContests, and LiveCodeBench-v6 stay with their original
-sources under their own licenses.
-
-Until the upload finishes, expect gaps — the checkpoint links in particular are not live yet. Issues and
-questions are welcome in the meantime; if something you need is missing, open an issue and we will
-prioritize it in the queue.
+sources under their own licenses. If something you need is missing, please open an issue.
 
 ## Method
 

@@ -175,7 +175,7 @@ def resolve_rm_data_view(
 ) -> tuple[str, str]:
     """Resolve public RM data mode/policy to the concrete training view.
 
-    `paper_binary_balanced` is the CPPO_new paper-base view: non-corruption
+    `paper_binary_balanced` is the published view: non-corruption
     planner-output rows, balanced 1:1 by prompt. `model_only_1to1` is a
     stricter diagnostic variant. Keeping this in the dataset module prevents
     train/report/eval scripts from drifting on accepted mode-policy pairs.

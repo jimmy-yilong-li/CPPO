@@ -65,8 +65,8 @@ def assign_cppo_plan_rewards(
 ) -> None:
     """Assign RM diagnostic rewards and planner rewards in-place.
 
-    Paper-base mode is `jpsi_times_outcome` with `binary_jpsi`.
-    Group-argmax modes are archived variants only.
+    The published mode is `jpsi_times_outcome` with `binary_jpsi`.
+    Group-argmax modes are ablation variants.
     """
     for b in bundles:
         b.rm_winner = False
@@ -173,9 +173,8 @@ def _write_outcome_log(
 ) -> None:
     """Append one JSON line per bundle to `path`.
 
-    This is the audit trail for hard-negative mining and paper-base reward
-    diagnostics. For CPPO_new runs, `j_psi` and `plan_reward` are the primary
-    reward fields; `c_psi` is retained only for legacy comparisons.
+    This is the audit trail for reward diagnostics. `j_psi` and `plan_reward`
+    are the primary reward fields; `c_psi` is a diagnostic only.
 
     Best-effort: a write failure logs a warning and continues — training
     correctness does not depend on this log.
@@ -358,7 +357,7 @@ def run_cppo_rollout_hf(
       5. Compute branch_rewards, outcome_reward
 
     Then score all plans with scorer.score_plan_details() and compute
-    paper-base plan_reward = J_psi * outcome_reward by default.
+    plan_reward = J_psi * outcome_reward by default.
 
     Args:
         policy_model: HuggingFace CausalLM (the current policy).

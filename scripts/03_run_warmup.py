@@ -80,7 +80,7 @@ def main() -> None:
         "--allow-archived-config",
         action="store_true",
         help="Allow an archived ablation config. Default is to reject archived "
-             "configs so pre-CPPO_new variants cannot be run by accident.",
+             "configs so ablation variants cannot be run by accident.",
     )
     args = parser.parse_args()
 

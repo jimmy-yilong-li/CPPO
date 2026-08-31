@@ -2,7 +2,7 @@
 
 Both `scripts/03_run_warmup.py` and `scripts/04_run_cppo.py` write a
 `run_config.json` provenance snapshot and guard against accidentally
-re-using a run directory (review T17-17-17 #1, #2, #3, #4). Keeping
+re-using a run directory. Keeping
 the implementation in one place ensures both scripts capture the same
 git state, problems hash, and CLI args.
 """

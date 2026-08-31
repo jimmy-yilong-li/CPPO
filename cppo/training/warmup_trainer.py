@@ -139,8 +139,8 @@ class PlannerWarmupTrainer:
         # Reward scorer (frozen RM + calibration thresholds)
         self.scorer = PlanRewardScorer(rm_path, device=device)
 
-        # Refuse half-precision trainable params (root cause of the
-        # 2026-05-10 smoke's all-zero loss).
+        # Refuse half-precision trainable params: AdamW at warmup
+        # learning rates cannot move bf16/fp16 weights.
         from cppo.training.cppo_trainer import _assert_policy_dtype_safe_for_optimizer
         _assert_policy_dtype_safe_for_optimizer(
             p for p in self.policy.parameters() if p.requires_grad
@@ -341,7 +341,7 @@ class PlannerWarmupTrainer:
             # gate unparseable raw outputs to zero reward.
             plan_texts.append(_format_plan_methods(parsed) if parsed else rd.response_text)
 
-        # Score with RM. Paper-base warmup uses binary Jψ; Cψ stays diagnostic.
+        # Score with RM. Warm-up uses binary Jψ; Cψ stays diagnostic.
         if hasattr(self.scorer, "score_plan_details"):
             score_details = self.scorer.score_plan_details(problem_texts, plan_texts)
             raw_scores = [float(d["pass_prob"]) for d in score_details]
@@ -433,7 +433,7 @@ class PlannerWarmupTrainer:
             if parseable_flags
             else 0.0
         )
-        # rm_valid_rate follows the paper-base binary decision Jψ. Gating on
+        # rm_valid_rate follows the binary decision Jψ. Gating on
         # parseable prevents early-stop from firing while a high percentage of
         # plans are still unparseable junk that scored 0.
         n_total = len(cpsi_scores)

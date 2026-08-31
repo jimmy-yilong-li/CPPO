@@ -61,8 +61,8 @@ def assign_group_argmax_rewards(
 class PlanRewardScorer:
     """Loads a frozen binary Pass/Fail reward model to score plans.
 
-    The paper-base reward consumes binary J_psi. The calibrated C_psi value is
-    retained only as a legacy diagnostic for old audits and reports.
+    The published reward consumes binary J_psi. The calibrated C_psi value is
+    retained as a diagnostic only.
     Uses attention_mask-based last-token indexing (not logits[:, -1, :])
     to correctly handle right-padded batches.
     """
@@ -115,8 +115,8 @@ class PlanRewardScorer:
 
         self._pass_id, self._fail_id = get_rm_verbalizer_token_ids(self.tokenizer)
 
-        # Load legacy diagnostic calibration thresholds. These must not be
-        # treated as the CPPO_new paper-base reward.
+        # Load diagnostic calibration thresholds. These must not be treated
+        # as the published reward.
         thresholds_path = rm_path / "thresholds.json"
         if thresholds_path.exists():
             with open(thresholds_path) as f:

@@ -158,7 +158,7 @@ def main() -> None:
         "--allow-archived-config",
         action="store_true",
         help="Allow archived ablation configs. Default is to reject archived "
-        "configs so pre-CPPO_new variants cannot be run by accident.",
+        "configs so ablation variants cannot be run by accident.",
     )
     parser.add_argument(
         "--prompt-max-tokens",
@@ -223,7 +223,7 @@ def main() -> None:
     run_id = args.run_id or datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     save_dir = base_save_dir / run_id
     # Guard BEFORE mkdir so a contaminated run dir aborts before we
-    # even touch the filesystem (review T17-17-17 #1).
+    # even touch the filesystem.
     _assert_run_dir_clean(save_dir=save_dir, allow_resume=args.allow_resume)
     save_dir.mkdir(parents=True, exist_ok=True)
     logger.info("run_id = %s, save_dir = %s", run_id, save_dir)
