@@ -2,7 +2,7 @@
 
 # Cast a Wider Net
 
-### Coordinated Pass@$K$ Policy Optimization for Code Reasoning
+### Coordinated Pass@K Policy Optimization for Code Reasoning
 
 **Yilong Li**<sup>1</sup> &nbsp;·&nbsp; **Suman Banerjee**<sup>1</sup> &nbsp;·&nbsp; **Tong Che**<sup>2,†</sup>
 
@@ -63,7 +63,7 @@ method precisely and to train and evaluate on your own data.
 | Strategy-tuple rollout, split-region advantages, GRPO update | available |
 | Plan-validity reward model: training, calibration, gating | available |
 | Sandboxed verifier and code extraction | available |
-| Planner SFT, warm-up, reward-density audit, joint CPPO, pass@$K$ evaluation | available |
+| Planner SFT, warm-up, reward-density audit, joint CPPO, pass@K evaluation | available |
 | Trained checkpoints (planner–solver, plan-validity RM) | uploading soon |
 | Baseline implementations (PKPO, UpSkill, PlanSearch) | uploading soon |
 | SFT data-construction funnel and judge prompts | uploading soon |
@@ -111,44 +111,6 @@ Where each part of the paper lives in this code:
 | Split-region advantages, Eq. (7)–(8) | [`cppo/training/cppo_trainer.py`](cppo/training/cppo_trainer.py), [`cppo/training/advantages.py`](cppo/training/advantages.py) |
 | GRPO objective, Eq. (9) | [`cppo/training/grpo.py`](cppo/training/grpo.py) |
 | Warm-up reward $R_{\text{warm}} = J_\psi$ | [`cppo/training/warmup_trainer.py`](cppo/training/warmup_trainer.py) |
-
-## Results
-
-Pass@4 under the same $K{=}4$ solver-attempt budget and verifier, as reported in Table 1 of the paper
-(mean$_{\pm\text{std}}$ over three training seeds).
-
-<div align="center">
-
-| Method | APPS | CodeContests | LCBv6 |
-| :--- | :---: | :---: | :---: |
-| **Qwen3.5-4B** | | | |
-| Direct Solve | 0.515<sub>±0.022</sub> | 0.094<sub>±0.014</sub> | 0.214<sub>±0.013</sub> |
-| Plan-and-Solve | 0.530<sub>±0.019</sub> | 0.098<sub>±0.016</sub> | 0.255<sub>±0.012</sub> |
-| PlanSearch | 0.554<sub>±0.022</sub> | 0.128<sub>±0.021</sub> | 0.236<sub>±0.012</sub> |
-| Pass@K Training / RLVR | 0.607<sub>±0.017</sub> | 0.115<sub>±0.020</sub> | 0.316<sub>±0.019</sub> |
-| PKPO | 0.722<sub>±0.021</sub> | 0.156<sub>±0.020</sub> | 0.488<sub>±0.015</sub> |
-| UpSkill | 0.661<sub>±0.023</sub> | 0.121<sub>±0.019</sub> | 0.411<sub>±0.016</sub> |
-| Tuple Planner SFT | 0.548<sub>±0.024</sub> | 0.147<sub>±0.021</sub> | 0.348<sub>±0.018</sub> |
-| **CPPO** | **0.784**<sup>†</sup><sub>±0.013</sub> | **0.231**<sup>†</sup><sub>±0.025</sub> | **0.505**<sub>±0.017</sub> |
-| **Qwen3.5-9B** | | | |
-| Direct Solve | 0.696<sub>±0.021</sub> | 0.175<sub>±0.019</sub> | 0.481<sub>±0.014</sub> |
-| Plan-and-Solve | 0.801<sub>±0.015</sub> | 0.171<sub>±0.017</sub> | 0.490<sub>±0.020</sub> |
-| PlanSearch | 0.770<sub>±0.019</sub> | 0.168<sub>±0.018</sub> | 0.564<sub>±0.019</sub> |
-| Pass@K Training / RLVR | 0.762<sub>±0.015</sub> | 0.185<sub>±0.021</sub> | 0.503<sub>±0.020</sub> |
-| PKPO | 0.787<sub>±0.020</sub> | 0.183<sub>±0.025</sub> | 0.588<sub>±0.015</sub> |
-| UpSkill | 0.762<sub>±0.015</sub> | 0.136<sub>±0.017</sub> | 0.542<sub>±0.013</sub> |
-| Tuple Planner SFT | 0.733<sub>±0.016</sub> | 0.279<sub>±0.026</sub> | 0.514<sub>±0.015</sub> |
-| **CPPO** | **0.806**<sub>±0.019</sub> | **0.396**<sup>†</sup><sub>±0.028</sub> | **0.728**<sup>†</sup><sub>±0.016</sub> |
-
-</div>
-
-<sup>†</sup> CPPO beats the strongest non-CPPO baseline in that cell under a hierarchical bootstrap over
-evaluation problems and training seeds ($p < 0.05$, 1000 resamples). Unmarked gains are positive but not
-significant.
-
-CPPO also wins on decoded-token accounting: on LCBv6 with Qwen3.5-4B it reaches 3.25 pass@4 per 10k decoded
-tokens against 2.28 for PKPO and 1.24 for Direct Solve, because the concise plan contract shortens
-strategy-conditioned solver completions.
 
 ## Repository layout
 
