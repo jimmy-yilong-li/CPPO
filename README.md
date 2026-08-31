@@ -73,9 +73,9 @@ method precisely and to train and evaluate on your own data.
 We redistribute no benchmark content: APPS, CodeContests, and LiveCodeBench-v6 stay with their original
 sources under their own licenses.
 
-Until the upload finishes, expect gaps — the placeholders below are real and are on the same list:
-the `LICENSE` file, the clone URL, and the checkpoint links. Issues and questions are welcome in the
-meantime; if something you need is missing, open an issue and we will prioritize it in the queue.
+Until the upload finishes, expect gaps — the checkpoint links in particular are not live yet. Issues and
+questions are welcome in the meantime; if something you need is missing, open an issue and we will
+prioritize it in the queue.
 
 ## Method
 
@@ -167,8 +167,8 @@ configs/           YAML for each stage; values follow Section 4 of the paper
 ## Installation
 
 ```bash
-git clone <repository-url>
-cd CPPO_OpenSource
+git clone git@github.com:jimmy-yilong-li/CPPO.git
+cd CPPO
 python -m venv .venv && source .venv/bin/activate
 pip install -e .
 ```
@@ -332,4 +332,4 @@ future work.
 
 ## License
 
-Being finalized as part of the staged upload; the `LICENSE` file lands with the next batch.
+Released under the MIT License — see [`LICENSE`](LICENSE).
